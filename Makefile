@@ -31,7 +31,11 @@ clean:
 
 rmi:
 	@printf "\033[32m[+] Removing Docker images...\033[0m\n"
-	docker rmi -f $(shell docker image ls -q)
+	@if [ -z "$(shell docker image ls -q)" ]; then \
+		printf "\033[33m[+] No Docker images to remove.\033[0m\n"; \
+	else \
+		docker rmi -f $(shell docker image ls -q); \
+	fi
 	@printf "\033[32m[+] Docker images removed.\033[0m\n"
 
 .PHONY: up down logs restart kill clean rmi
