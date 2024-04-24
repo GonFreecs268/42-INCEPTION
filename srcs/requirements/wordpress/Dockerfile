@@ -10,16 +10,20 @@ RUN apt-get clean
 # Empty cache
 RUN rm -rf /var/lib/apt/lists/*
 
-# Install WP-CLI (handling wordpress cmd)
-RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp
+RUN mkdir -p /var/www/html
 
 # Download and extract Wordpress
-RUN wget https://wordpress.org/wordpress-6.2.2.tar.gz -P /var/www/html \
-    && cd /var/www/html \
-    && tar -xzf /var/www/html/wordpress-6.2.2.tar.gz \
-    && rm /var/www/html/wordpress-6.2.2.tar.gz
+RUN wget https://wordpress.org/wordpress-6.2.2.tar.gz -P /var/www \
+    && cd /var/www \
+    && tar -xzf wordpress-6.2.2.tar.gz \
+    && rm wordpress-6.2.2.tar.gz \
+    && cp -r /var/www/wordpress/. /var/www/html/
+
+# Install WP-CLI (handling wordpress cmd)
+RUN cd /var/www/html \
+    && wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp-cli.phar
 
 # Set permissions and ownership for web server
 RUN chown -R www-data:www-data /var/www/* && \

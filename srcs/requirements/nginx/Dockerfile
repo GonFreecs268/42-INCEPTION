@@ -1,5 +1,4 @@
 # Allow to tell docker under which OS my virtual machine is running 
-# so it mean which base image that my Docker image will be built upon
 FROM debian:bullseye
 
 # Install NGINX and other dependencies
